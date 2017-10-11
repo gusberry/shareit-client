@@ -1,11 +1,11 @@
-var path = require('path')
+var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://0.0.0.0:8080',
     'webpack/hot/only-dev-server',
-    './index.web.js'
+    './index.web.js',
   ],
   module: {
     loaders: [
@@ -15,8 +15,8 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          presets: ['react-native']
-        }
+          presets: ['react-native'],
+        },
       },
       {
         test: /\.css$/,
@@ -28,25 +28,33 @@ module.exports = {
         use: {
           loader: 'url-loader',
           options: {
-            name: '[name].[ext]'
-          }
-        }
-      }
-    ]
+            name: '[name].[ext]',
+          },
+        },
+      },
+      {
+        test: /\.ttf$/,
+        loader: 'url-loader', // or directly file-loader
+        include: path.resolve(
+          __dirname,
+          '../node_modules/react-native-vector-icons'
+        ),
+      },
+    ],
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.web.js'],
     alias: {
       'react-native': 'react-native-web',
-      'react': 'react'
-    }
+      react: 'react',
+    },
   },
   output: {
     path: __dirname + '/web/dist',
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   devServer: {
-    contentBase: './web/dist'
-  }
+    contentBase: './web/dist',
+  },
 };
